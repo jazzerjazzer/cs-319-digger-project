@@ -7,6 +7,9 @@ public class GoldCoin extends Coin{
 		super(x, y);
 		image = new ImageIcon("gold.png").getImage();
 		score = 100;
-		
+	}
+	
+	public char toChar(){
+		return 'G';
 	}
 }

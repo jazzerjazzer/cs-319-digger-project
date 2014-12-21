@@ -13,8 +13,8 @@ public class Tile extends GameObject{
 		this.y = y;
 		gameObjectState = State.notEaten;
 		
-		height = 40;
-		width = 40;
+		height = 10;
+		width = 10;
 		
 		rectangle.x = getX();
 		rectangle.y = getY();
@@ -29,5 +29,9 @@ public class Tile extends GameObject{
 	public void paint(Graphics g){
 		if(gameObjectState != State.eaten)
 			g.drawImage(image, getX(), getY(), null);
+	}
+	
+	public char toChar(){
+		return 'T';
 	}
 }
