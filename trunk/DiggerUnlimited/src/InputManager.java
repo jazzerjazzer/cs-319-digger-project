@@ -31,6 +31,8 @@ public class InputManager implements KeyListener, MouseListener{
 	public void mouseClicked(java.awt.event.MouseEvent e) {
 		if(e.getX() > 500 && e.getX() < 800 && e.getY() > 150 && e.getY() < 250){
 			this.g.getMainMenu().mouseClicked("PlayGame");
+		}else{
+			g.showCurrentMap();
 		}
 		//this.g.getMainMenu().mouseClicked();
 		//System.out.println(e.getX() + " " + e.getY());

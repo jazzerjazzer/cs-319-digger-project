@@ -13,7 +13,8 @@ public class MainContainer extends JFrame{
 		setVisible(true);
 		setSize(1200, 720);
 		setLocationRelativeTo(null);
-		ge.startGameLoop();	
+		if(ge.generatingDone)
+			ge.startGameLoop();	
 
 	}
 

@@ -1,6 +1,7 @@
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
@@ -15,13 +16,15 @@ public class Miner extends GameObject{
 	public static enum State {noBonus, collectAllGolds, extraLife};
 	private State bonusState;
 	private int life;
-
+	private Point currentTile;
+	private boolean firstMove = false;
 	public Miner(GameEngine ge) {
-		x = 512;
+		x = 400;
 		y = 600;
 
-		height = 60;
-		width = 60;
+		currentTile = new Point(16,10);
+		height = 40;
+		width = 40;
 
 		life = 3;
 
@@ -30,16 +33,16 @@ public class Miner extends GameObject{
 		rectangle.x = x;
 		rectangle.y = y;
 
-		rectangle.height = 45;
-		rectangle.width = 45;
+		rectangle.height = 20;
+		rectangle.width = 20;
 
 		bonusState = State.noBonus;
 
 		digger = new Image[4];
-		digger[0] = new ImageIcon("digger_left.png").getImage();
-		digger[1] = new ImageIcon("digger_right.png").getImage();
-		digger[2] = new ImageIcon("digger_back.png").getImage();
-		digger[3] = new ImageIcon("digger_front.png").getImage();
+		digger[0] = new ImageIcon("digger_left_40.png").getImage();
+		digger[1] = new ImageIcon("digger_right_40.png").getImage();
+		digger[2] = new ImageIcon("digger_back_40.png").getImage();
+		digger[3] = new ImageIcon("digger_front_40.png").getImage();
 		currentDigger = digger[0];
 	}
 
@@ -55,12 +58,26 @@ public class Miner extends GameObject{
 			if (y + deltaY > 0 && y + deltaY < game.getHeight()-70)
 				setY(y + deltaY);
 		}
+		
+		
+		if(currentDigger == digger[0] || currentDigger == digger[2]){
+			if (x + deltaX > 0 && x + deltaX < game.getWidth()-40)
+				currentTile.x = ((x/40) + (deltaX / 40));
+			if (y + deltaY > 0 && y + deltaY < game.getHeight()-40)
+				currentTile.y = ((y/40) + (deltaY / 40));
+		}else{
+			if (x + deltaX > 0 && x + deltaX < game.getWidth()-70)
+				currentTile.x = ((x/40) + (deltaX / 40));
+			if (y + deltaY > 0 && y + deltaY < game.getHeight()-70)
+				currentTile.y = ((y/40) + (deltaY / 40));
+		}		
 	}
 
 	@Override
 	public void paint(Graphics g) {
-
-		g.drawImage(currentDigger, getX(), getY(), null);
+		currentTile.x = (int)x/40;
+		currentTile.y = (int)y/40;
+		g.drawImage(currentDigger, currentTile.x*40, currentTile.y*40, null);
 	}
 
 	public void keyReleased(KeyEvent e) {
@@ -70,22 +87,25 @@ public class Miner extends GameObject{
 
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_LEFT){
-			deltaX = -1;
+			deltaX = -2;
 			currentDigger = digger[0];
 		}
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT){
-			deltaX = 1;
+			deltaX = 2;
 			currentDigger = digger[1];
 
 		}
 		if (e.getKeyCode() == KeyEvent.VK_UP){
-			deltaY = -1;
+			deltaY = -2;
 			currentDigger = digger[2];
 
 		}
 		if (e.getKeyCode() == KeyEvent.VK_DOWN){
-			deltaY = 1;
+			deltaY = 2;
 			currentDigger = digger[3];
+		}
+		if(!firstMove){
+			firstMove = true;
 		}
 	}
 
@@ -111,6 +131,25 @@ public class Miner extends GameObject{
 
 	public void setLife(int life) {
 		this.life = life;
-	}	
+	}
 
+	public Point getCurrentTile() {
+		return currentTile;
+	}
+
+	public void setCurrentTile(Point currentTile) {
+		this.currentTile = currentTile;
+	}	
+	
+	public char toChar(){
+		return 'M';
+	}
+
+	public boolean isFirstMove() {
+		return firstMove;
+	}
+
+	public void setFirstMove(boolean firstMove) {
+		this.firstMove = firstMove;
+	}
 }

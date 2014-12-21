@@ -38,7 +38,7 @@ public class GameGUI extends JPanel {
 			}
 
 			g.setFont(new Font("Calibri", Font.PLAIN, 20));
-			g.drawString("Score:" + ((Miner)gameObjects[15][10]).getScore(), 50, 50);
+			g.drawString("Score:" + 0, 50, 50);
 		}else if(guiState == State.menu){
 			menu.paint(g2d);
 		}

@@ -67,5 +67,8 @@ public class GameObject {
 	public void setGameObjectState(State gameObjectState) {
 		this.gameObjectState = gameObjectState;
 	}
+	public char toChar(){
+		return 'A';
+	}
 	
 }
