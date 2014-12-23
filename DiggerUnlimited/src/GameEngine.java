@@ -24,6 +24,9 @@ public class GameEngine {
 	private HighScoreList highScoreListMenu;
 	private GameThemesMenu themeMenu;
 	private PauseMenu pauseMenu;
+	
+	private FileManager fm;
+	
 	int number = 0;
 	int score =0;
 	
@@ -32,9 +35,10 @@ public class GameEngine {
 
 
 	public GameEngine(){
+		fm = new FileManager();
 		gm = new GameMap();
 		coinAmount = 10;
-		map = gm.generateMapFromFile("map.txt");
+		map = gm.generateMapFromFile(fm.getFile("map.txt"));
 		generateGameObjects();
 		im = new InputManager(this);
 		mainMenu = new MainMenu(this);
@@ -98,7 +102,7 @@ public class GameEngine {
 				}else if (map[i][j] == 'R')
 					gameObjects[i][j] = new Road (j*40, i*40);
 				else if (map[i][j] == 'S')
-					gameObjects[i][j] = new Road (j*40, i*40);
+					gameObjects[i][j] = new SilverCoin (j*40, i*40);
 				else if (map[i][j] == 'M'){
 					miner = new Miner(this);
 					gameObjects[i][j] = miner;
