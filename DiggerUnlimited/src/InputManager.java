@@ -18,6 +18,10 @@ public class InputManager implements KeyListener, MouseListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		
+		if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
+			this.g.pauseGame();	
+		
 		this.g.getMiner().keyPressed(e);
 
 	}
@@ -46,7 +50,7 @@ public class InputManager implements KeyListener, MouseListener{
 				this.g.getMainMenu().mouseClicked("Credits");
 			}
 			else if(e.getX() > 800 && e.getX() < 1100 && e.getY() > 580 && e.getY() < 650){
-				this.g.getMainMenu().mouseClicked("Exit");
+				this.g.endGame();
 			}
 		}
 		if(g.mGame.getGuiState()== GameGUI.State.settings){
@@ -76,7 +80,6 @@ public class InputManager implements KeyListener, MouseListener{
 			else if(e.getX() > 440 && e.getX() < 740 && e.getY() > 235 && e.getY() < 305){
 				this.g.getGameThemesMenu().mouseClicked("Digger Unlimited");
 				
-				
 			}
 			else if(e.getX() > 440 && e.getX() < 740 && e.getY() > 335 && e.getY() < 405){
 				this.g.getGameThemesMenu().mouseClicked("Halloween");
@@ -96,7 +99,7 @@ public class InputManager implements KeyListener, MouseListener{
 				this.g.getCreditsMenu().mouseClicked("Back Button");
 	 		}
 		}
-		if(g.mGame.getGuiState()== GameGUI.State.name){
+		/*if(g.mGame.getGuiState()== GameGUI.State.name){
 			if(e.getX() > 400 && e.getX() < 500 && e.getY() > 400 && e.getY() < 440){
 				
 				this.g.getNameScreen().mouseClicked("Skip");
@@ -104,12 +107,15 @@ public class InputManager implements KeyListener, MouseListener{
 			if(e.getX() > 680 && e.getX() < 800 && e.getY() > 400 && e.getY() < 440){
 				this.g.getNameScreen().mouseClicked("Enter");
 			}
-		}
+		}*/
 		if(g.mGame.getGuiState()== GameGUI.State.pause){
 			if(e.getX() > 1040 && e.getX() < 1180 && e.getY() > 640 && e.getY() < 675){
-				this.g.getPauseMenu().mouseClicked("Retry");
+				this.g.getPauseMenu().mouseClicked("Back Button");
 			}
 			else if(e.getX() > 440 && e.getX() < 740 && e.getY() > 235 && e.getY() < 305){
+				this.g.getPauseMenu().mouseClicked("Retry");
+			}
+			else if(e.getX() > 440 && e.getX() < 740 && e.getY() > 335 && e.getY() < 405){
 				this.g.getPauseMenu().mouseClicked("Resume");
 			}
 		}

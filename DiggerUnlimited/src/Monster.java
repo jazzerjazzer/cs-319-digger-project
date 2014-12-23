@@ -57,14 +57,14 @@ public class Monster extends GameObject{
 
 	}
 
-	public void print_grid () {
+	/*public void print_grid () {
 
 		for (int row=0; row < grid.length; row++) {
 			for (int column=0; column < grid[row].length; column++)
 				System.out.print (grid[row][column]);
 			System.out.println();
 		}
-	}
+	}*/
 
 	public boolean solve (int row, int column) {
 
@@ -175,6 +175,8 @@ public class Monster extends GameObject{
 						createMaze(ge.getMaze());
 
 						startSolving();
+						//print_grid();
+
 						if(recordedRoutes.size() > 0){
 							for(int i = 0; i < route.size(); i++){
 								if(route.get(i).x != recordedRoutes.get(recordedRoutes.size()-1).get(i).x 
@@ -196,13 +198,6 @@ public class Monster extends GameObject{
 							temp_index = recordedRoutes.size()-1;
 						}
 						temp_route = recordedRoutes.get(temp_index);
-						for(int i = 0; i < recordedRoutes.size(); i++){
-							System.out.println("****" + i + "****");
-							for(int j = 0; j < recordedRoutes.get(recordedRoutes.size()-1).size(); j++){
-								System.out.println(recordedRoutes.get(i).get(j).x + " " + recordedRoutes.get(i).get(j).y);
-							}
-							System.out.println("****" + i + "****");
-						}
 						
 						currentMove = temp_route.size()-1;
 						mf.firstTime = false;
@@ -349,6 +344,6 @@ public class Monster extends GameObject{
 				}
 			}
 		};
-		timer.schedule(tasknew, 1000,1000);	
+		//timer.schedule(tasknew, 1000,1000);	
 	}
 }

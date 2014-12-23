@@ -1,12 +1,10 @@
-import java.net.URL;
-import java.io.*;
-import java.awt.Graphics2D;
-import java.util.ArrayList;
-import javax.sound.sampled.*;
-import java.awt.*;
-import javax.swing.*;
 
-public class MainMenu {
+import java.awt.Graphics2D;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+
+public class MainMenu extends Menu{
 
 	Button playButton;
 	Button howToPlayButton;
@@ -14,28 +12,15 @@ public class MainMenu {
 	Button credits;
 	Button exitButton;
 	Button highScoreList;
-	
-	GameEngine ge;
-	ArrayList<Button> mainButtons;
-	protected Image image;
-	
+		
 	public MainMenu(GameEngine g){
-		
-		mainButtons  = new ArrayList<Button>();
-		
+		super(g);
 		playButton = new Button("Play Game", 800, 80,300,70);
 		highScoreList = new Button("High Score List",800,180,300,70);
 		settings = new Button("Settings",800,280,300,70);
 		howToPlayButton = new Button("How to Play", 800, 380, 300,70);
 		credits = new Button("Credits",800,480,300,70);
 		exitButton = new Button("Exit", 800, 580, 300,70);
-		
-		mainButtons.add(playButton);
-		mainButtons.add(highScoreList);
-		mainButtons.add(settings);
-		mainButtons.add(howToPlayButton);
-		mainButtons.add(credits);
-		mainButtons.add(exitButton);
 		
 		image= new ImageIcon("main-menu.png").getImage();
 		
@@ -44,8 +29,6 @@ public class MainMenu {
 	
 	public void paint(Graphics2D g){
 		
-		for(int i = 0; i < mainButtons.size(); i++)
-			mainButtons.get(i).paint(g);
 		g.drawImage(image,0,0,null);
 		
 	}

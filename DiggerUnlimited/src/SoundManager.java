@@ -4,14 +4,14 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
-public enum SoundEffect{bonus("bonus.wav"),coin("coin.wav"),monsterWalk("monster.wav"),minerWalk("dig.wav"),eatMiner("eatminer.wav"),gameplay("monster.wav");
+public enum SoundManager{bonus("bonus.wav"),coin("coin.wav"),monsterWalk("monster.wav"),minerWalk("dig.wav"),eatMiner("eatminer.wav"),gameplay("fight club.wav");
 
 private Clip clip;
 
 public boolean isClicked;
 
 
-SoundEffect(String soundFile){
+SoundManager(String soundFile){
 
 	isClicked = true;
 
