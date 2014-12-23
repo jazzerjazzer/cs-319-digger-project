@@ -13,16 +13,16 @@ public class Tile extends GameObject{
 		this.y = y;
 		gameObjectState = State.notEaten;
 		
-		height = 10;
-		width = 10;
+		height = 40;
+		width = 40;
 		
 		rectangle.x = getX();
 		rectangle.y = getY();
 		
-		rectangle.height = getHeight();
-		rectangle.width = getWidth();
+		rectangle.height = 5;
+		rectangle.width = 5;
 		
-		image = new ImageIcon("earth_tile.jpg").getImage();
+		image = new ImageIcon("arka-fon.png").getImage();
 	}
 	
 	@Override
@@ -30,8 +30,7 @@ public class Tile extends GameObject{
 		if(gameObjectState != State.eaten)
 			g.drawImage(image, getX(), getY(), null);
 	}
-	
 	public char toChar(){
-		return 'T';
+		return 'E';
 	}
 }

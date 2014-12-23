@@ -11,14 +11,14 @@ import javax.swing.ImageIcon;
 
 public class Monster extends GameObject{
 
-	private ArrayList <Point> route;
+	private ArrayList <Point> route, temp_route;
 	private Image monster;
 	char right;
 	char left;
 	char up;
 	char down;
 	char[][] grid;
-	int endRow, endCol;
+	int endRow, endCol, temp_index;
 	GameEngine ge;
 	Point currentTile;
 	int currentMove;
@@ -29,7 +29,7 @@ public class Monster extends GameObject{
 	public Monster(final GameEngine ge){
 
 		route = new ArrayList<Point>();
-		monster = new ImageIcon("silver.png").getImage();
+		monster = new ImageIcon("earthMonster.png").getImage();
 		height = 40;
 		width = 40;
 		x = 40;
@@ -88,7 +88,6 @@ public class Monster extends GameObject{
 				route.add(new Point(column, row));
 			}
 		}
-
 		return done;
 
 	} 
@@ -144,7 +143,7 @@ public class Monster extends GameObject{
 		}
 		return null;
 	}
-	public boolean startSolving(int row, int column){
+	public boolean startSolving(){
 		Point temp_start = findStart();
 		route.clear();
 		findMiner();
@@ -166,39 +165,60 @@ public class Monster extends GameObject{
 			public void run() {
 				if(ge.getMiner().isFirstMove()){
 					createMaze(ge.getMaze());
-					//print_grid();
 					if(findStart() == null){
 						createMaze(ge.getMaze());
 					}
-					startSolving(findStart().x, findStart().y);
 					if(currentMove == 0)
 						mf.nextMove = true;
 					if(mf.nextMove || mf.firstTime){
-						//System.out.println("Route_Clear!");
 						route.clear();
-						//System.out.println("Current_Map");
-						//System.out.println("Current_Tile: " + currentTile.x + " " + currentTile.y);
-						//ge.showCurrentMap();
 						createMaze(ge.getMaze());
-						int s_x = findStart().x;
-						int s_y = findStart().y;
-						//System.out.println("Start: " + s_x + " " + s_y);
-						startSolving(s_x,  s_y);
-						//System.out.println("Print_Grid");
-						//print_grid();
-						//System.out.println("Route:");
-						for(int i = route.size()-1; i >= 0; i --)
-							System.out.println(route.get(i).x + " " + route.get(i).y);
-						currentMove = route.size()-1;
-						//System.out.println("Current_Move: " + currentMove);
+
+						startSolving();
+						if(recordedRoutes.size() > 0){
+							for(int i = 0; i < route.size(); i++){
+								if(route.get(i).x != recordedRoutes.get(recordedRoutes.size()-1).get(i).x 
+										|| route.get(i).y != recordedRoutes.get(recordedRoutes.size()-1).get(i).y){
+									recordedRoutes.add(route);
+									break;
+								}
+							}
+						}else{
+							recordedRoutes.add(route);
+						}
+
+						if(recordedRoutes.size() > 2){
+							if(recordedRoutes.get(recordedRoutes.size()-1).size() > recordedRoutes.get(recordedRoutes.size()-2).size())
+								temp_index = recordedRoutes.size()-2;
+							else
+								temp_index = recordedRoutes.size()-1;
+						}else{
+							temp_index = recordedRoutes.size()-1;
+						}
+						temp_route = recordedRoutes.get(temp_index);
+						for(int i = 0; i < recordedRoutes.size(); i++){
+							System.out.println("****" + i + "****");
+							for(int j = 0; j < recordedRoutes.get(recordedRoutes.size()-1).size(); j++){
+								System.out.println(recordedRoutes.get(i).get(j).x + " " + recordedRoutes.get(i).get(j).y);
+							}
+							System.out.println("****" + i + "****");
+						}
+						
+						currentMove = temp_route.size()-1;
 						mf.firstTime = false;
 						mf.nextMove = false;
 					} 
 					if(currentMove > 0){
-						currentTile.x = route.get(currentMove).x;
-						currentTile.y = route.get(currentMove).y;
-						//System.out.println("CT: " + route.get(currentMove).x + " " + route.get(currentMove).y);
-						currentMove--;
+						try{
+							currentMove--;
+							currentTile.x = temp_route.get(currentMove).x;
+							currentTile.y = temp_route.get(currentMove).y;
+						}catch(Exception e){
+							System.out.println("EXCEPTION " + e );
+
+						}finally{
+							mf.nextMove = true;
+						}
 					}
 				}
 			}
@@ -212,7 +232,7 @@ public class Monster extends GameObject{
 		public boolean nextMove = false;
 		public boolean firstTime = true;
 	}
-	
+
 	public void restart(){
 		x = 40;
 		y = 120;
@@ -224,46 +244,111 @@ public class Monster extends GameObject{
 
 			@Override
 			public void run() {
-				if(ge.getMiner().isFirstMove()){
+				/*if(ge.getMiner().isFirstMove()){
 					createMaze(ge.getMaze());
-					//print_grid();
 					if(findStart() == null){
 						createMaze(ge.getMaze());
 					}
-					startSolving(findStart().x, findStart().y);
 					if(currentMove == 0)
 						mf.nextMove = true;
 					if(mf.nextMove || mf.firstTime){
-						//System.out.println("Route_Clear!");
 						route.clear();
-						//System.out.println("Current_Map");
-						//System.out.println("Current_Tile: " + currentTile.x + " " + currentTile.y);
-						//ge.showCurrentMap();
+
 						createMaze(ge.getMaze());
-						int s_x = findStart().x;
-						int s_y = findStart().y;
-						//System.out.println("Start: " + s_x + " " + s_y);
-						startSolving(s_x,  s_y);
-						//System.out.println("Print_Grid");
-						//print_grid();
-						//System.out.println("Route:");
-						for(int i = route.size()-1; i >= 0; i --)
-							System.out.println(route.get(i).x + " " + route.get(i).y);
-						currentMove = route.size()-1;
-						//System.out.println("Current_Move: " + currentMove);
+						startSolving();
+						if(recordedRoutes.size() > 0){
+							if(recordedRoutes.get(recordedRoutes.size()-1).size() == route.size()){
+								for(int i = 0; i < route.size(); i++){
+									if(route.get(i).x != recordedRoutes.get(recordedRoutes.size()-1).get(i).x 
+											|| route.get(i).y != recordedRoutes.get(recordedRoutes.size()-1).get(i).y){
+										recordedRoutes.add(route);
+										break;
+									}
+								}
+							}
+						}else{
+							recordedRoutes.add(route);
+						}
+						if(recordedRoutes.size() > 2){
+							if(recordedRoutes.get(recordedRoutes.size()-1).size() > recordedRoutes.get(recordedRoutes.size()-2).size())
+								temp_index = recordedRoutes.size()-2;
+							else
+								temp_index = recordedRoutes.size()-1;
+						}else{
+							temp_index = recordedRoutes.size()-1;
+						}
+						temp_route = recordedRoutes.get(temp_index);
+
+						currentMove = temp_route.size()-1;
 						mf.firstTime = false;
 						mf.nextMove = false;
 					} 
 					if(currentMove > 0){
-						currentTile.x = route.get(currentMove).x;
-						currentTile.y = route.get(currentMove).y;
-						//System.out.println("CT: " + route.get(currentMove).x + " " + route.get(currentMove).y);
-						currentMove--;
+						try{
+							currentMove--;
+							currentTile.x = temp_route.get(currentMove).x;
+							currentTile.y = temp_route.get(currentMove).y;
+						}catch(Exception e){
+							System.out.println("EXCEPTION " + e );
+
+						}finally{
+							mf.nextMove = true;
+						}
+					}
+				}*/
+				if(ge.getMiner().isFirstMove()){
+					createMaze(ge.getMaze());
+					if(findStart() == null){
+						createMaze(ge.getMaze());
+					}
+					if(currentMove == 0)
+						mf.nextMove = true;
+					if(mf.nextMove || mf.firstTime){
+						route.clear();
+						createMaze(ge.getMaze());
+
+						startSolving();
+						if(recordedRoutes.size() > 0){
+							for(int i = 0; i < route.size(); i++){
+								if(route.get(i).x != recordedRoutes.get(recordedRoutes.size()-1).get(i).x 
+										|| route.get(i).y != recordedRoutes.get(recordedRoutes.size()-1).get(i).y){
+									recordedRoutes.add(route);
+									break;
+								}
+							}
+						}else{
+							recordedRoutes.add(route);
+						}
+
+						if(recordedRoutes.size() > 2){
+							if(recordedRoutes.get(recordedRoutes.size()-1).size() > recordedRoutes.get(recordedRoutes.size()-2).size())
+								temp_index = recordedRoutes.size()-2;
+							else
+								temp_index = recordedRoutes.size()-1;
+						}else{
+							temp_index = recordedRoutes.size()-1;
+						}
+						temp_route = recordedRoutes.get(temp_index);
+
+						currentMove = temp_route.size()-1;
+						mf.firstTime = false;
+						mf.nextMove = false;
+					} 
+					if(currentMove > 0){
+						try{
+							currentMove--;
+							currentTile.x = temp_route.get(currentMove).x;
+							currentTile.y = temp_route.get(currentMove).y;
+						}catch(Exception e){
+							System.out.println("EXCEPTION " + e );
+
+						}finally{
+							mf.nextMove = true;
+						}
 					}
 				}
 			}
 		};
-		timer.schedule(tasknew, 1000,1000);
-		
+		timer.schedule(tasknew, 1000,1000);	
 	}
 }

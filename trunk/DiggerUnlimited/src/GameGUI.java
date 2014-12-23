@@ -8,14 +8,29 @@ import javax.swing.JPanel;
 public class GameGUI extends JPanel {
 
 	private GameObject[][] gameObjects;
-	public static enum State {game, menu};
+	public static enum State {game, menu ,settings, howToPlay, credits,theme,highScoreList,name,exit,pause};
 	private State guiState;
 	private MainMenu menu;
+	private Settings settingsMenu;
+	private HowToPlay howToPlayMenu;
+	private Credits creditsMenu;
+	private GameThemesScreen themeMenu;
+	private HighScoreList highScoreList;
+	private NameScreen nameScreen;
+	private PauseMenu pauseMenu;
+	private JPanel panel;
 
 
-	public GameGUI(GameObject[][] go, MainMenu m, InputManager im) {
+	public GameGUI(GameObject[][] go, MainMenu m,Settings s,HowToPlay h, Credits c, GameThemesScreen gt,HighScoreList hs,NameScreen n,PauseMenu p,InputManager im) {
 		gameObjects = go;
 		menu = m;
+		settingsMenu = s;
+		howToPlayMenu = h;
+		creditsMenu = c;
+		themeMenu = gt;
+		highScoreList = hs;
+		nameScreen = n;
+		pauseMenu = p;
 		addKeyListener(im);
 		addMouseListener(im);
 		setFocusable(true);
@@ -36,11 +51,31 @@ public class GameGUI extends JPanel {
 					gameObjects[i][j].paint(g2d);
 				}
 			}
-
 			g.setFont(new Font("Calibri", Font.PLAIN, 20));
-			g.drawString("Score:" + 0, 50, 50);
+			//g.drawString("Score:" + ((Miner)gameObjects[15][10]).getScore(), 50, 50);
+			//g.drawString("Life:"+((Miner)gameObjects[15][10]).getLife(), 100,100);
+			
 		}else if(guiState == State.menu){
+			
 			menu.paint(g2d);
+		}else if(guiState == State.settings){
+			settingsMenu.paint(g2d);
+		}else if(guiState == State.howToPlay){
+			howToPlayMenu.paint(g2d);
+		}else if(guiState == State.credits){
+			creditsMenu.paint(g2d);
+		} else if(guiState == State.theme){
+			themeMenu.paint(g2d);  
+		}else if(guiState == State.highScoreList){
+			
+			highScoreList.paint(g2d); 
+		
+		}else if(guiState == State.exit){
+			// System.exit(0);  // bu burada olmamalı
+		}else if(guiState == State.name){
+			nameScreen.paint(g2d);
+		}else if(guiState == State.pause){
+			pauseMenu.paint(g2d);  
 		}
 	}
 

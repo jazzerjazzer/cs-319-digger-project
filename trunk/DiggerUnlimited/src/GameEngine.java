@@ -17,13 +17,39 @@ public class GameEngine {
 	private GameMap gm;
 	char[][] theMaze;
 	public boolean generatingDone = false, monsterMoved = true;
+	
+	public SoundEffect soundEffect;
+	public static enum GameState{a,b};
+	private GameState gameState;
+
+	private Settings settingsMenu;
+	private HowToPlay howToPlayMenu;
+	private Credits creditsMenu;
+	private HighScoreList highScoreListMenu;
+	private GameThemesScreen themeMenu;
+	private NameScreen nameScreen;
+	private PauseMenu pauseMenu;
+	int number = 0;
+	int score =0;
+	
 	public GameEngine(){
 		gm = new GameMap();
 		map = gm.generateMapFromFile("map.txt");
 		generateGameObjects();
 		im = new InputManager(this);
+		
 		mainMenu = new MainMenu(this);
-		mGame = new GameGUI(gameObjects, mainMenu, im);
+		settingsMenu = new Settings(this);
+		howToPlayMenu = new HowToPlay(this);
+		creditsMenu = new Credits(this);
+		themeMenu = new GameThemesScreen(this);
+		highScoreListMenu = new HighScoreList(this);
+		nameScreen = new NameScreen(this);
+		pauseMenu = new PauseMenu(this);
+		gameState = GameState.a;
+
+		mGame = new GameGUI(gameObjects, mainMenu,settingsMenu,howToPlayMenu,creditsMenu,themeMenu,highScoreListMenu,nameScreen,pauseMenu, im);
+		
 		mGame.setGuiState(GameGUI.State.menu);
 		cd = new CollisionDetector(mGame);
 		isPaused = false; 
@@ -46,7 +72,44 @@ public class GameEngine {
 				}else if(map[i][j] == 'G'){
 					gameObjects[i][j] = new GoldCoin(j*40, i*40);
 				}else if (map[i][j] == 'B'){
-					gameObjects[i][j] = new ExtraLife(j*40, i*40);
+					number=1;
+					//number= (int)Math.floor((Math.random()*12)+1);
+					if(number==1){
+						gameObjects[i][j] = new ExtraLife(j*40, i*40);
+					}
+					else if(number==2){
+						gameObjects[i][j] = new LoseLife(j*40, i*40);
+					}
+					else if(number==3){
+						gameObjects[i][j] = new SilverToGold(j*40, i*40);
+					}
+					else if(number==4){
+						gameObjects[i][j] = new GoldToSilver(j*40, i*40);
+					}
+					else if(number==5){
+						gameObjects[i][j] = new DoubleGold(j*40, i*40);
+					}
+					else if(number==6){
+						gameObjects[i][j] = new DoubleSilver(j*40, i*40);
+					}
+					else if(number==7){
+						gameObjects[i][j] = new TripleGold(j*40, i*40);
+					}
+					else if(number==8){
+						gameObjects[i][j] = new TripleSilver(j*40, i*40);
+					}
+					else if(number==9){
+						gameObjects[i][j] = new DigAll(j*40, i*40);
+					}
+					else if(number==10){
+						gameObjects[i][j] = new DigBack(j*40, i*40);
+					}
+					else if(number==11){
+						gameObjects[i][j] = new DoubleMonsters(j*40, i*40);
+					}
+					else if(number==12){
+						gameObjects[i][j] = new DestroyMonsters(j*40, i*40);
+					}
 				}else if (map[i][j] == 'R')
 					gameObjects[i][j] = new Road (j*40, i*40);
 				else if (map[i][j] == 'S')
@@ -61,6 +124,7 @@ public class GameEngine {
 			}
 		}
 		generatingDone = true;
+		System.out.println("DONE");
 	}
 
 	public void startGameLoop(){
@@ -108,15 +172,73 @@ public class GameEngine {
 				if(!(gameObjects[i][j] instanceof Road)){
 					if(cd.checkBonusDiamondCollision(miner, gameObjects[i][j])){
 
-						if(gameObjects[i][j] instanceof Coin){
-							miner.setScore(miner.getScore()+ (((Coin)gameObjects[i][j]).getScore()));
-
-						}else if(gameObjects[i][j] instanceof ExtraLife){
-
-							miner.setBonusState(Miner.State.extraLife);
-							miner.setLife(miner.getLife()+1);
+						if(gameObjects[i][j] instanceof SilverCoin){
+							SoundEffect.coin.play();
+							
+							if(miner.getBonusState()==Miner.State.silverToGold){
+								
+								score = (((GoldCoin)gameObjects[i][j]).getScore())*2;
+								miner.setScore(miner.getScore()+ score);
+								
+							}
+							else if(miner.getBonusState()==Miner.State.doubleSilver){
+								
+								score = (((GoldCoin)gameObjects[i][j]).getScore())*2;
+								miner.setScore(miner.getScore()+ score);
+								
+							}else if(miner.getBonusState()==Miner.State.tripleSilver){
+								
+								score = (((GoldCoin)gameObjects[i][j]).getScore())*3;
+								miner.setScore(miner.getScore()+ score);
+								
+							}
+							else 
+								miner.setScore(miner.getScore()+ (((Coin)gameObjects[i][j]).getScore()));
+							
+						}else if(gameObjects[i][j] instanceof GoldCoin){
+							SoundEffect.coin.play();
+							
+							if(miner.getBonusState()==Miner.State.goldToSilver){
+								System.out.println("Gold to Silver");
+							}
+							else if(miner.getBonusState()==Miner.State.doubleGold){
+								score = (((GoldCoin)gameObjects[i][j]).getScore())*2;
+								miner.setScore(miner.getScore()+ score);
+							}
+							else if(miner.getBonusState()==Miner.State.tripleGold){
+								score = (((GoldCoin)gameObjects[i][j]).getScore())*3;
+								miner.setScore(miner.getScore()+ score);
+							}
+							else 
+								miner.setScore(miner.getScore()+ (((Coin)gameObjects[i][j]).getScore()));
 						}
-
+						else if(gameObjects[i][j] instanceof ExtraLife){
+							miner.setLife(miner.getLife()+1);
+							SoundEffect.bonus.play();
+						}
+						else if(gameObjects[i][j] instanceof LoseLife){
+							miner.setLife(miner.getLife()-1);
+							SoundEffect.bonus.play();
+						}
+						else if(gameObjects[i][j] instanceof SilverToGold){
+							miner.setBonusState(Miner.State.silverToGold);
+						}
+						else if(gameObjects[i][j] instanceof GoldToSilver){
+							miner.setBonusState(Miner.State.goldToSilver);
+						}
+						else if(gameObjects[i][j] instanceof DoubleGold){
+							miner.setBonusState(Miner.State.doubleGold);
+						}
+						else if(gameObjects[i][j] instanceof DoubleSilver){
+							miner.setBonusState(Miner.State.doubleSilver);
+						}
+						else if(gameObjects[i][j] instanceof TripleGold ){
+							miner.setBonusState(Miner.State.tripleGold);
+						}
+						else if(gameObjects[i][j] instanceof TripleSilver){
+							miner.setBonusState(Miner.State.tripleSilver);
+						}
+						
 						//gameObjects[i][j].setGameObjectState(GameObject.State.eaten);
 						if(!(gameObjects[i][j] instanceof Miner))
 							gameObjects[i][j] = new Road(j*40, i*40);
@@ -182,19 +304,81 @@ public class GameEngine {
 		this.map = map;
 	}
 
+	public Settings getSettingsMenu(){
+		return settingsMenu;
+		
+	}
+	
+	public void setSettingsMenu(Settings settingsMenu){
+		this.settingsMenu = settingsMenu;
+	}
+	
+	public HowToPlay getHowToPlayMenu(){
+		return howToPlayMenu;
+		
+		
+	}
+	
+	public void setSettingsMenu(HowToPlay howToPlayMenu){
+		this.howToPlayMenu = howToPlayMenu;
+	}
+	public Credits getCreditsMenu(){
+		return creditsMenu;
+		
+		
+	}
+	
+	public void setCreditsMenu(Credits creditsMenu){
+		this.creditsMenu = creditsMenu;
+	}
+	
+	public GameThemesScreen getGameThemesMenu(){
+		return themeMenu;
+		
+		
+	}
+	
+	public void setGameThemesMenu(GameThemesScreen themeMenu){
+		this.themeMenu = themeMenu;
+	}
+	
+	public NameScreen getNameScreen(){
+		return nameScreen;
+		
+		
+	}
+	
+	public void setNameScreen(NameScreen nameScreen){
+		this.nameScreen = nameScreen;
+	}
+	
+	public PauseMenu getPauseMenu(){
+		return pauseMenu;
+		
+		
+	}
+	
+	public void setPauseMenu(PauseMenu pauseMenu){
+		this.pauseMenu =pauseMenu;
+	}
+	
+	public GameState getGameState() {
+		return  gameState;
+	}
+
+	public void setGameState(GameState  gameState) {
+		this. gameState = gameState;
+	}
 	public void showCurrentMap(){
 
-
-		System.out.println("****");
 		for (int i = 0; i < gameObjects.length; i++){ 
 			for(int j = 0; j < gameObjects[i].length; j++){
 				System.out.print(theMaze[i][j]);
 			}
 			System.out.println();
 		}
-		System.out.println("*****");
-		//monster.move();
 
+		//monster.move();
 	}
 
 	public char[][] getMaze(){
