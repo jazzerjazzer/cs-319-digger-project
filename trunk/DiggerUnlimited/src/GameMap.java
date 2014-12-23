@@ -16,13 +16,12 @@ public class GameMap {
 		
 	}
 
-	public char[][] generateMapFromFile(String fileName){
+	public char[][] generateMapFromFile(File mapFile){
 		char[][] map;
 		String[] mapStr;
 		StringBuffer stringBuffer =null;
 		try {
-			File file = new File(fileName);
-			FileReader fileReader = new FileReader(file);
+			FileReader fileReader = new FileReader(mapFile);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			stringBuffer = new StringBuffer();
 			String line;
