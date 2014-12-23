@@ -1,34 +1,19 @@
-import java.awt.Image;
+
+import java.awt.Graphics2D;
 
 import javax.swing.ImageIcon;
 
-import java.awt.Graphics2D;
-import java.util.ArrayList;
-
-
-
-public class Settings {
+public class SettingsMenu extends Menu{
 	
-	private Image image;
-	private Image image2;
-	private Image image3;
-	private Image image4;
 	public boolean FXCheck;
 	public boolean musicCheck;
 	
 	Button FXButton;
 	Button musicButton;
 	Button back;
-	
-	
-	GameEngine ge;
-	ArrayList<Button> settingsButtons;
-	
-	public Settings(GameEngine g){
 		
-		
-		settingsButtons  = new ArrayList<Button>();
-		
+	public SettingsMenu(GameEngine g){
+		super(g);
 		image = new ImageIcon("settings.png").getImage();
 		
 		FXCheck = true;
@@ -38,18 +23,12 @@ public class Settings {
 		musicButton = new Button("Music Button",440,335,300,70);
 		back = new Button("Back Button", 1040,640,140,35);
 		ge = g;
-		
-		
-		
 	}
 	
 	
 	public void paint(Graphics2D g){
 		
-		for(int i = 0; i < settingsButtons.size(); i++)
-			settingsButtons.get(i).paint(g);
 		g.drawImage(image,0,0,null);
-		
 	}
 	
 	public void mouseClicked(String whichButton){
@@ -62,12 +41,12 @@ public class Settings {
 				
 				FXCheck = false;
 				
-				SoundEffect.minerWalk.isClicked=false;
-				SoundEffect.coin.isClicked=false;
-				SoundEffect.minerWalk.isClicked=false;
-				SoundEffect.monsterWalk.isClicked=false;
-				SoundEffect.bonus.isClicked=false;
-				SoundEffect.eatMiner.isClicked=false;
+				SoundManager.minerWalk.isClicked=false;
+				SoundManager.coin.isClicked=false;
+				SoundManager.minerWalk.isClicked=false;
+				SoundManager.monsterWalk.isClicked=false;
+				SoundManager.bonus.isClicked=false;
+				SoundManager.eatMiner.isClicked=false;
 				
 				if(musicCheck){
 					
@@ -87,12 +66,12 @@ public class Settings {
 				FXCheck = true;
 				
 				
-				SoundEffect.minerWalk.isClicked=true;
-				SoundEffect.coin.isClicked=true;
-				SoundEffect.minerWalk.isClicked=true;
-				SoundEffect.monsterWalk.isClicked=true;
-				SoundEffect.bonus.isClicked=true;
-				SoundEffect.eatMiner.isClicked=true;
+				SoundManager.minerWalk.isClicked=true;
+				SoundManager.coin.isClicked=true;
+				SoundManager.minerWalk.isClicked=true;
+				SoundManager.monsterWalk.isClicked=true;
+				SoundManager.bonus.isClicked=true;
+				SoundManager.eatMiner.isClicked=true;
 				
 				if(musicCheck){
 					
@@ -112,7 +91,7 @@ public class Settings {
 		if(whichButton.equals( "Music Button")){
 			
 			if(musicCheck){
-				SoundEffect.gameplay.isClicked= false;
+				SoundManager.gameplay.isClicked= false;
 				
 				musicCheck = false;
 				if(FXCheck){
@@ -130,7 +109,7 @@ public class Settings {
 			}else{
 				
 				musicCheck = true;
-				SoundEffect.gameplay.isClicked= true;
+				SoundManager.gameplay.isClicked= true;
 				
 				if(FXCheck){
 

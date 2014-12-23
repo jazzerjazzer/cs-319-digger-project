@@ -1,4 +1,5 @@
 
+
 import java.awt.Graphics;
 import java.awt.Image;
 
@@ -39,13 +40,7 @@ public class Bonus extends GameObject{
 	}
 
 
-	public void update(){
-
-	}
-
-	public void applyBonus(String type){
-
-	}
+	
 	public char toChar(){
 		return 'B';
 	}

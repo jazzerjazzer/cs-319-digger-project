@@ -1,4 +1,5 @@
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
@@ -12,7 +13,7 @@ public class Miner extends GameObject{
 
 	private GameEngine game;
 	private Image[] digger;
-	private Image currentDigger;
+	private Image currentDigger, lifeIcon;
 	public static enum State {noBonus, extraLife,loseLife,doubleGold,tripleGold,doubleSilver,tripleSilver,silverToGold,goldToSilver};
 	private State bonusState;
 	private int life;
@@ -43,6 +44,8 @@ public class Miner extends GameObject{
 		digger[1] = new ImageIcon("miner-right.png").getImage();
 		digger[2] = new ImageIcon("miner-back.png").getImage();
 		digger[3] = new ImageIcon("miner-front.png").getImage();
+		lifeIcon = new ImageIcon("Life.png").getImage();
+
 		currentDigger = digger[0];
 	}
 
@@ -58,8 +61,7 @@ public class Miner extends GameObject{
 			if (y + deltaY > 0 && y + deltaY < game.getHeight()-70)
 				setY(y + deltaY);
 		}
-		
-		
+
 		if(currentDigger == digger[0] || currentDigger == digger[2]){
 			if (x + deltaX > 0 && x + deltaX < game.getWidth()-40)
 				currentTile.x = ((x/40) + (deltaX / 40));
@@ -75,14 +77,25 @@ public class Miner extends GameObject{
 
 	@Override
 	public void paint(Graphics g) {
+		digger[0] = new ImageIcon("miner-left.png").getImage();
+		digger[1] = new ImageIcon("miner-right.png").getImage();
+		digger[2] = new ImageIcon("miner-back.png").getImage();
+		digger[3] = new ImageIcon("miner-front.png").getImage();
+
+
 		currentTile.x = (int)x/40;
 		currentTile.y = (int)y/40;
+		for(int i = 0; i < life; i++)
+			g.drawImage(lifeIcon, i*50, 0, null);
 		g.drawImage(currentDigger, currentTile.x*40, currentTile.y*40, null);
+		g.setFont(new Font("Consolas", Font.BOLD, 25));
+		g.drawString("Score: " + score, 900, 50);
 	}
 
 	public void keyReleased(KeyEvent e) {
 		deltaX = 0;
 		deltaY = 0;
+		SoundManager.minerWalk.stop();
 	}
 
 	public void keyPressed(KeyEvent e) {
@@ -107,6 +120,8 @@ public class Miner extends GameObject{
 		if(!firstMove){
 			firstMove = true;
 		}
+		SoundManager.minerWalk.play();
+
 	}
 
 	public int getScore() {
@@ -140,7 +155,7 @@ public class Miner extends GameObject{
 	public void setCurrentTile(Point currentTile) {
 		this.currentTile = currentTile;
 	}	
-	
+
 	public char toChar(){
 		return 'M';
 	}
