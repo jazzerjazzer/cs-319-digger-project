@@ -120,10 +120,10 @@ public class GameEngine {
 				checkCollisions();
 				mGame.repaint();
 
-				if(miner.getLife() == 0){
+				if(miner.getLife() == 0 || coinAmount == 0){
 					isGameOver = true;
-					mGame.setGuiState(GameGUI.State.gameOver);
-
+					mGame.setGuiState(GameGUI.State.menu);
+					SoundManager.gameplay.stop();
 				}
 				try {
 					Thread.sleep(10);

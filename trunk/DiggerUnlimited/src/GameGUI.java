@@ -19,7 +19,7 @@ public class GameGUI extends JPanel {
 	private GameThemesMenu themeMenu;
 	private HighScoreList highScoreList;
 	private PauseMenu pauseMenu;
-	//private ScoreMenu scoreMenu;
+	private ScoreMenu scoreMenu;
 	JTextField scoreArea;  
 	public GameGUI(GameEngine ge) {
 		this.ge = ge;
@@ -70,7 +70,7 @@ public class GameGUI extends JPanel {
 		}else if(guiState == State.pause){
 			pauseMenu.paint(g2d);  
 		}else if (guiState == State.gameOver){
-			//scoreMenu.paint(g2d);  
+			scoreMenu.paint(g2d);  
 		}
 	}
 
