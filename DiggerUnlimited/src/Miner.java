@@ -13,7 +13,7 @@ public class Miner extends GameObject{
 	private GameEngine game;
 	private Image[] digger;
 	private Image currentDigger;
-	public static enum State {noBonus, collectAllGolds, extraLife};
+	public static enum State {noBonus, extraLife,loseLife,doubleGold,tripleGold,doubleSilver,tripleSilver,silverToGold,goldToSilver};
 	private State bonusState;
 	private int life;
 	private Point currentTile;
@@ -33,16 +33,16 @@ public class Miner extends GameObject{
 		rectangle.x = x;
 		rectangle.y = y;
 
-		rectangle.height = 20;
-		rectangle.width = 20;
+		rectangle.height = 5;
+		rectangle.width = 5;
 
 		bonusState = State.noBonus;
 
 		digger = new Image[4];
-		digger[0] = new ImageIcon("digger_left_40.png").getImage();
-		digger[1] = new ImageIcon("digger_right_40.png").getImage();
-		digger[2] = new ImageIcon("digger_back_40.png").getImage();
-		digger[3] = new ImageIcon("digger_front_40.png").getImage();
+		digger[0] = new ImageIcon("miner-left.png").getImage();
+		digger[1] = new ImageIcon("miner-right.png").getImage();
+		digger[2] = new ImageIcon("miner-back.png").getImage();
+		digger[3] = new ImageIcon("miner-front.png").getImage();
 		currentDigger = digger[0];
 	}
 

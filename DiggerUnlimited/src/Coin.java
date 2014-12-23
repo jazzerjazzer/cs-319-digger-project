@@ -40,4 +40,8 @@ public class Coin extends GameObject{
 	public void setScore(int score) {
 		this.score = score;
 	}
+	
+	public char toChar(){
+		return 'G';
+	}
 }

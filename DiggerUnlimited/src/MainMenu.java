@@ -1,44 +1,69 @@
-import java.awt.Color;
-import java.awt.Font;
+import java.net.URL;
+import java.io.*;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-
+import javax.sound.sampled.*;
+import java.awt.*;
+import javax.swing.*;
 
 public class MainMenu {
 
 	Button playButton;
-	Button tutorialButton;
+	Button howToPlayButton;
+	Button settings;
+	Button credits;
 	Button exitButton;
-	Font f;
+	Button highScoreList;
+	
 	GameEngine ge;
-	ArrayList<Button> buttons;
+	ArrayList<Button> mainButtons;
+	protected Image image;
 	
 	public MainMenu(GameEngine g){
-		buttons  = new ArrayList<Button>();
 		
-		f = new Font("arial", Font.BOLD, 50);
+		mainButtons  = new ArrayList<Button>();
 		
-		playButton = new Button("Play Game", 500, 150, 300, 100, Color.BLACK,f);
-		tutorialButton = new Button("How to Play", 500, 270, 300, 100, Color.BLACK, f);
-		exitButton = new Button("Exit", 500, 390, 300, 100, Color.BLACK, f);
+		playButton = new Button("Play Game", 800, 80,300,70);
+		highScoreList = new Button("High Score List",800,180,300,70);
+		settings = new Button("Settings",800,280,300,70);
+		howToPlayButton = new Button("How to Play", 800, 380, 300,70);
+		credits = new Button("Credits",800,480,300,70);
+		exitButton = new Button("Exit", 800, 580, 300,70);
 		
-		buttons.add(playButton);
-		buttons.add(tutorialButton);
-		buttons.add(exitButton);
+		mainButtons.add(playButton);
+		mainButtons.add(highScoreList);
+		mainButtons.add(settings);
+		mainButtons.add(howToPlayButton);
+		mainButtons.add(credits);
+		mainButtons.add(exitButton);
+		
+		image= new ImageIcon("main-menu.png").getImage();
 		
 		ge = g;
 	}
 	
 	public void paint(Graphics2D g){
 		
-		for(int i = 0; i < buttons.size(); i++)
-			buttons.get(i).paint(g);
+		for(int i = 0; i < mainButtons.size(); i++)
+			mainButtons.get(i).paint(g);
+		g.drawImage(image,0,0,null);
 		
 	}
 	
 	public void mouseClicked(String whichButton){
-		if(whichButton.equals("PlayGame"))
-			ge.mGame.setGuiState(GameGUI.State.game);
+		if(whichButton.equals("Play Game"))
+			ge.mGame.setGuiState(GameGUI.State.theme);
+		else if(whichButton.equals("Settings")){
+			ge.mGame.setGuiState(GameGUI.State.settings);
+		}
+		else if(whichButton.equals("High Score List"))
+			ge.mGame.setGuiState(GameGUI.State.highScoreList);	
+		else if(whichButton.equals("How To Play"))
+			ge.mGame.setGuiState(GameGUI.State.howToPlay);
+		else if(whichButton.equals("Credits"))
+			ge.mGame.setGuiState(GameGUI.State.credits);
+		else if(whichButton.equals("Exit"))
+			ge.mGame.setGuiState(GameGUI.State.exit);
 		
 	}
 }
