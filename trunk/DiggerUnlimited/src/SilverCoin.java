@@ -8,7 +8,7 @@ public class SilverCoin extends Coin{
 
 	public SilverCoin(int x, int y) {
 		super(x, y);
-		image = new ImageIcon("silver3.png").getImage();
+		image = new ImageIcon("CCandy3.png").getImage();
 		score = 50;
 	}
 	
