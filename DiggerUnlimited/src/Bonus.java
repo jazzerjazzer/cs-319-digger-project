@@ -25,7 +25,7 @@ public class Bonus extends GameObject{
 		rectangle.height = getHeight();
 		rectangle.width = getWidth();
 
-		image = new ImageIcon("bonus3.png").getImage();
+		//image = new ImageIcon("cbonus3.png").getImage();
 
 	}
 
@@ -35,8 +35,8 @@ public class Bonus extends GameObject{
 
 	@Override
 	public void paint(Graphics g){
-		if(gameObjectState != State.eaten)
-			g.drawImage(image, getX(), getY(), null);
+		
+			g.drawImage(image,x, y, null);
 	}
 
 

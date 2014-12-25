@@ -41,10 +41,10 @@ public class Miner extends GameObject{
 		bonusState = State.noBonus;
 
 		digger = new Image[4];
-		digger[0] = new ImageIcon("miner-left.png").getImage();
-		digger[1] = new ImageIcon("miner-right.png").getImage();
-		digger[2] = new ImageIcon("miner-back.png").getImage();
-		digger[3] = new ImageIcon("miner-front.png").getImage();
+		digger[0] = new ImageIcon("santa-miner-left.png").getImage();
+		digger[1] = new ImageIcon("santa-miner-right.png").getImage();
+		digger[2] = new ImageIcon("santa-miner-back.png").getImage();
+		digger[3] = new ImageIcon("santa-miner-front.png").getImage();
 		lifeIcon = new ImageIcon("Life.png").getImage();
 
 		currentDigger = digger[0];
@@ -83,10 +83,6 @@ public class Miner extends GameObject{
 
 	@Override
 	public void paint(Graphics g) {
-		digger[0] = new ImageIcon("miner-left.png").getImage();
-		digger[1] = new ImageIcon("miner-right.png").getImage();
-		digger[2] = new ImageIcon("miner-back.png").getImage();
-		digger[3] = new ImageIcon("miner-front.png").getImage();
 
 
 		currentTile.x = (int)x/40;

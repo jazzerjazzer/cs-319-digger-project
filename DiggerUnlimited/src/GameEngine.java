@@ -78,7 +78,8 @@ public class GameEngine {
 				}else if(map[i][j] == 'G'){
 					gameObjects[i][j] = new GoldCoin(j*40, i*40);
 				}else if (map[i][j] == 'B'){
-					number=1;
+		
+					number =(int) Math.floor((Math.random()*8) +1);
 					if(number==1){
 						gameObjects[i][j] = new ExtraLife(j*40, i*40);
 					}
@@ -179,16 +180,16 @@ public class GameEngine {
 							SoundManager.coin.play();
 							coinAmount--;
 							if(miner.getBonusState()==Miner.State.silverToGold){
-								((SilverCoin)gameObjects[i][j]).setScore(100);
-								miner.setScore(miner.getScore()+ score);
+								
+								miner.setScore(miner.getScore()+ 100);
 							}
 							else if(miner.getBonusState()==Miner.State.doubleSilver){
-								((SilverCoin)gameObjects[i][j]).setScore(100);
-								miner.setScore(miner.getScore()+ score);
+								
+								miner.setScore(miner.getScore()+100);
 
 							}else if(miner.getBonusState()==Miner.State.tripleSilver){
-								((SilverCoin)gameObjects[i][j]).setScore(150);
-								miner.setScore(miner.getScore()+ score);
+								
+								miner.setScore(miner.getScore()+ 150);
 							}
 							else 
 								miner.setScore(miner.getScore()+ (((Coin)gameObjects[i][j]).getScore()));
@@ -197,29 +198,32 @@ public class GameEngine {
 							System.out.println("Miner state: " + miner.getBonusState());
 							SoundManager.coin.play();
 							coinAmount--;
-
+							
 							if(miner.getBonusState()==Miner.State.goldToSilver){
-								((GoldCoin)gameObjects[i][j]).setScore(50);
-								miner.setScore(miner.getScore()+ score);
+							
+								//((GoldCoin)gameObjects[i][j]).setScore(50);
+								miner.setScore(miner.getScore()+ 50);
 
-								System.out.println("Gold to Silver");
+								
 							}
 							else if(miner.getBonusState()==Miner.State.doubleGold){
-								((GoldCoin)gameObjects[i][j]).setScore(200);
-								miner.setScore(miner.getScore()+ score);
-								miner.setScore(miner.getScore()+ score);
+								
+								miner.setScore(miner.getScore()+ 200);
+								
 							}
 							else if(miner.getBonusState()==Miner.State.tripleGold){
-								((GoldCoin)gameObjects[i][j]).setScore(300);
-								miner.setScore(miner.getScore()+ score);
-								miner.setScore(miner.getScore()+ score);
+								
+								miner.setScore(miner.getScore()+ 300);
+							
 							}
 							else 
 								miner.setScore(miner.getScore()+ (((Coin)gameObjects[i][j]).getScore()));
 						}
 						else if(gameObjects[i][j] instanceof ExtraLife){
+							
 							miner.setLife(miner.getLife()+1);
 							SoundManager.bonus.play();
+							
 						}
 						else if(gameObjects[i][j] instanceof LoseLife){
 							miner.setLife(miner.getLife()-1);
