@@ -20,8 +20,9 @@ public class GameGUI extends JPanel {
 	private HighScoreList highScoreList;
 	private PauseMenu pauseMenu;
 	private ScoreMenu scoreMenu;
-	JTextField scoreArea;  
-	public GameGUI(GameEngine ge) {
+	private static GameGUI gui = null;
+	
+	private GameGUI(GameEngine ge) {
 		this.ge = ge;
 		gameObjects = ge.getGameObjects();
 		menu = ge.getMainMenu();
@@ -37,6 +38,12 @@ public class GameGUI extends JPanel {
 		setVisible(true);
 		guiState = State.menu;
 	}
+	public static GameGUI getInstance(GameEngine ge){
+		if (gui == null)
+			gui = new GameGUI(ge);
+		return gui;
+	}
+	
 
 	@Override
 	public void paint(Graphics g) {
