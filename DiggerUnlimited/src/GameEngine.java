@@ -28,15 +28,15 @@ public class GameEngine {
 	private FileManager fm;
 	
 	int number = 0;
-	int score =0;
+	int score = 0;
 	
 	public static enum ThemeState {diggerUnlimited, halloween, christmas, diggerOriginal};
 	public ThemeState currentThemeState;
+	private static GameEngine ge = null;
 
-
-	public GameEngine(){
+	private GameEngine(){
 		fm = new FileManager();
-		gm = new GameMap();
+		gm = GameMap.getInstance();
 		coinAmount = 10;
 		map = gm.generateMapFromFile(fm.getFile("map.txt"));
 		generateGameObjects();
@@ -49,7 +49,7 @@ public class GameEngine {
 		highScoreListMenu = new HighScoreList(this);
 		pauseMenu = new PauseMenu(this);
 
-		mGame = new GameGUI(this);
+		mGame = GameGUI.getInstance(this);
 
 		mGame.setGuiState(GameGUI.State.menu);
 		cd = new CollisionDetector(mGame);
@@ -61,6 +61,11 @@ public class GameEngine {
 				theMaze[i][j] = gameObjects[i][j].toChar();
 			}
 		}
+	}
+	public static GameEngine getInstance(){
+		if(ge == null)
+			ge = new GameEngine();
+		return ge;
 	}
 
 	public void generateGameObjects(){
@@ -104,10 +109,10 @@ public class GameEngine {
 				else if (map[i][j] == 'S')
 					gameObjects[i][j] = new SilverCoin (j*40, i*40);
 				else if (map[i][j] == 'M'){
-					miner = new Miner(this);
+					miner = Miner.getInstance(this);
 					gameObjects[i][j] = miner;
 				}else if (map[i][j] == 'O'){
-					monster = new Monster(this);
+					monster = Monster.getInstance(this);
 					gameObjects[i][j] = monster;
 				}
 			}

@@ -8,12 +8,18 @@ public class GameMap {
 
 	//FileManager mapFileManager;
 	//File mapFile
-	
-	public GameMap(){
+	private static GameMap gm = null;
+	private GameMap(){
 
 		//mapFileManager = new FileManager();
 		//mapFile = new File("map.txt"); // map text file. 
 		
+	}
+	
+	public static GameMap getInstance(){
+		if(gm == null)
+			gm = new GameMap();
+		return gm;
 	}
 
 	public char[][] generateMapFromFile(File mapFile){

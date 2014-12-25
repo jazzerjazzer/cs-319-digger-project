@@ -10,7 +10,6 @@ import javax.swing.ImageIcon;
 public class Miner extends GameObject{
 
 	int deltaX = 0, deltaY = 0, score = 0;
-
 	private GameEngine game;
 	private Image[] digger;
 	private Image currentDigger, lifeIcon;
@@ -19,7 +18,9 @@ public class Miner extends GameObject{
 	private int life;
 	private Point currentTile;
 	private boolean firstMove = false;
-	public Miner(GameEngine ge) {
+	private static Miner miner = null;
+	
+	private Miner(GameEngine ge) {
 		x = 400;
 		y = 600;
 
@@ -48,7 +49,12 @@ public class Miner extends GameObject{
 
 		currentDigger = digger[0];
 	}
-
+	public static Miner getInstance(GameEngine ge){
+		if(miner == null){
+			miner = new Miner(ge);
+		}
+		return miner;
+	}
 	public void move() {
 		if(currentDigger == digger[0] || currentDigger == digger[2]){
 			if (x + deltaX > 0 && x + deltaX < game.getWidth()-40)

@@ -26,7 +26,9 @@ public class Monster extends GameObject{
 	TimerTask tasknew;
 	Timer timer;
 	MoveFlag mf = new MoveFlag();
-	public Monster(final GameEngine ge){
+	private static Monster monsterInstance = null;
+	
+	private Monster(final GameEngine ge){
 
 		route = new ArrayList<Point>();
 		monster = new ImageIcon("earthMonster.png").getImage();
@@ -47,6 +49,13 @@ public class Monster extends GameObject{
 		move();
 
 	}
+	
+	public static Monster getInstance(GameEngine ge){
+		if(monsterInstance == null)
+			monsterInstance = new Monster(ge);
+		return monsterInstance;
+	}
+	
 	public char toChar(){
 		return 'O';
 	}

@@ -5,7 +5,7 @@ public class MainContainer extends JFrame{
 	
 	public MainContainer(){
 		
-		GameEngine ge = new GameEngine();
+		GameEngine ge = GameEngine.getInstance();
 		add(ge.mGame);
 		
 		setResizable(false);
